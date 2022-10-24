@@ -44,28 +44,19 @@ public final class Matrix {
         return array[x][y] == -1;
     }
 
-    public void print(){
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[0].length; j++) {
-                System.out.printf("%4d", array[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
     public int getMetrics() {
         Point botPoint = findValue(-2);
         Point playerPoint = findValue(-3);
         Point exitPoint = findValue(-4);
         if(playerPoint == null || botPoint == null){
-            return 0;
+            return +INF;
         }
         if(exitPoint == null){
-            return INF;
+            return -INF;
         }
         int dExit = this.realDist(playerPoint, exitPoint);
         int dBot = this.realDist(playerPoint, botPoint);
-        return dBot - dExit;
+        return dExit - dBot;
     }
 
     private int realDist(Point p1, Point p2) {
