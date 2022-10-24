@@ -1,12 +1,17 @@
 package org.example.controllers;
 
+import static org.example.models.algorithms.astar.Algorithm.INF;
+
 import org.example.controllers.services.MatrixValidator;
 import org.example.models.Direction;
 import org.example.models.Matrix;
 import org.example.models.Point;
 import org.example.models.algorithms.astar.Algorithm;
 import org.example.models.algorithms.astar.NoWayFoundException;
+import org.example.models.alpha_beta_pruning.AlphaBetaPruning;
+import org.example.models.minimax.template.MinimaxTemplate;
 import org.example.models.nega.Negamax;
+import org.example.models.nega.NegamaxAlphaBeta;
 import org.example.utils.MatrixIOUtil;
 import org.example.utils.coloring.Color;
 import org.example.utils.coloring.ColorfulPrinter;
@@ -44,10 +49,15 @@ public class Controller {
                 //step of player
 //                MinimaxTemplate.State s = new MinimaxTemplate.State(matrix, true);
 //                matrix = MinimaxTemplate.minimaxDecision(s).getState();
+
 //                AlphaBetaPruning.State state = new AlphaBetaPruning.State(matrix, true);
 //                matrix = AlphaBetaPruning.minimaxDecision(state).getState();
-                Negamax.State state = new Negamax.State(matrix, 1);
-                matrix = Negamax.makeDecision(state).state();
+
+//                Negamax.State state = new Negamax.State(matrix, 1);
+//                matrix = Negamax.makeDecision(state).state();
+
+                NegamaxAlphaBeta.State state = new NegamaxAlphaBeta.State(matrix, 1);
+                matrix = NegamaxAlphaBeta.makeDecision(state, -INF, +INF).state();
 
                 playerPoint = matrix.findValue(-3);
                 MatrixIOUtil.printToScreen(matrix);

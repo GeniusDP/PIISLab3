@@ -1,5 +1,8 @@
 package org.example.models.nega;
 
+import static java.lang.Math.max;
+import static org.example.models.algorithms.astar.Algorithm.INF;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -16,24 +19,35 @@ public class NegamaxAlphaBeta {
   private NegamaxAlphaBeta() {
   }
 
-  public static State makeDecision(State state, int alpha, int beta) {
+  public static State makeDecision(State state, int a, int b) {
     cnt = 0;
-    State theBestChild = state.getActions().stream()
-        .max(Comparator.comparing(NegamaxAlphaBeta::perform)).get();
-    if (state.getMetrics() > theBestChild.getMetrics()) {
-      return state;
+    List<State> actions = state.getActions().stream().toList();
+    int value = -INF;
+    State result = state;
+    for (var s: actions){
+      int current = perform(s, a, b);
+      if(current > value){
+        value = current;
+        result = s;
+      }
     }
-    return theBestChild;
+    return result;
   }
 
-  private static int perform(State state) {
+  private static int perform(State state, int a, int b) {
     cnt++;
     if (state.isTerminal()) {
       return state.getMetrics();
     }
-    return state.getActions().stream()
-        .map(NegamaxAlphaBeta::perform)
-        .max(Comparator.comparing(Integer::valueOf)).get();
+    int value = -INF;
+    for (var child: state.getActions()){
+      value = max(value, -perform(child, -b, -a));
+      a = max(a, value);
+      if(a >= b){
+        break;
+      }
+    }
+    return value;
   }
 
   public record State(Matrix state, int color) {
