@@ -10,6 +10,7 @@ import org.example.models.algorithms.astar.Algorithm;
 import org.example.models.algorithms.astar.NoWayFoundException;
 import org.example.models.alpha_beta_pruning.AlphaBetaPruning;
 import org.example.models.minimax.template.MinimaxTemplate;
+import org.example.models.nega.NegaScout;
 import org.example.models.nega.Negamax;
 import org.example.models.nega.NegamaxAlphaBeta;
 import org.example.utils.MatrixIOUtil;
@@ -56,8 +57,11 @@ public class Controller {
 //                Negamax.State state = new Negamax.State(matrix, 1);
 //                matrix = Negamax.makeDecision(state).state();
 
-                NegamaxAlphaBeta.State state = new NegamaxAlphaBeta.State(matrix, 1);
-                matrix = NegamaxAlphaBeta.makeDecision(state, -INF, +INF).state();
+//                NegamaxAlphaBeta.State state = new NegamaxAlphaBeta.State(matrix, 1);
+//                matrix = NegamaxAlphaBeta.makeDecision(state, -INF, +INF).state();
+
+                NegaScout.State state = new NegaScout.State(matrix, 1);
+                matrix = NegaScout.makeDecision(state, -INF, +INF).state();
 
                 playerPoint = matrix.findValue(-3);
                 MatrixIOUtil.printToScreen(matrix);
@@ -117,31 +121,6 @@ public class Controller {
         }
         return new Matrix(array);
     }
-
-//    private Matrix playerMakesStep(Direction direction, Matrix matrix, Point point) {
-//        int[][] array = matrix.getArray();
-//        array[point.row][point.col] = 0;
-//        switch (direction) {
-//            case UP -> {
-//                array[point.row - 1][point.col] = -3;
-//                point.row--;
-//            }
-//            case DOWN -> {
-//                array[point.row + 1][point.col] = -3;
-//                point.row++;
-//            }
-//            case RIGHT -> {
-//                array[point.row][point.col + 1] = -3;
-//                point.col++;
-//            }
-//            case LEFT -> {
-//                array[point.row][point.col - 1] = -3;
-//                point.col--;
-//            }
-//            case NO_MOVE -> array[point.row][point.col] = -3;
-//        }
-//        return new Matrix(array);
-//    }
 
 
     private Matrix generateContent(Matrix matrix, Point botPoint, Point playerPoint, Point exitPoint) {

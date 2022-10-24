@@ -9,13 +9,13 @@ import java.util.List;
 import org.example.models.Direction;
 import org.example.models.Matrix;
 
-public class NegamaxAlphaBeta {
+public class NegaScout {
 
   private static final int MAX_DEPTH = 6;
 
   private static int cnt;
 
-  private NegamaxAlphaBeta() {
+  private NegaScout() {
   }
 
   public static State makeDecision(State state, int a, int b) {
@@ -33,20 +33,27 @@ public class NegamaxAlphaBeta {
     return result;
   }
 
-  private static int perform(State state, int a, int b) {
+  private static int perform(State state, int alpha, int beta) {
     cnt++;
+    int b, t;
     if (state.isTerminal()) {
       return state.getMetrics();
     }
-    int value = -INF;
-    for (var child: state.getActions()){
-      value = max(value, -perform(child, -b, -a));
-      a = max(a, value);
-      if(a >= b){
-        break;
+    List<State> actions = state.getActions().stream().toList();
+    b = beta;
+    for (int i = 0; i < actions.size(); i++){
+      State child = actions.get(i);
+      t = -perform(child, -b, -alpha);
+      if( (t > alpha) && (t < beta) && (i > 1) ){
+        t = -perform(child, -beta, -alpha);
       }
+      alpha = max(alpha, t);
+      if(alpha >= beta){
+        return alpha;
+      }
+      b = alpha + 1;
     }
-    return value;
+    return alpha;
   }
 
   public record State(Matrix state, int color) {
@@ -82,3 +89,4 @@ public class NegamaxAlphaBeta {
   }
 
 }
+
