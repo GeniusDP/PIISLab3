@@ -61,7 +61,6 @@ public class AStarPerformer extends AbstractAlgorithm {
         if(from[finishId]==-1){
             return NO_MOVE;
         }
-        //ColorfulPrinter.printlnColorfullyAndReset(Color.ANSI_CYAN, "" + g[finishId]);
         return findDirectionFromStartToFinish(from, array, finishId);
     }
 
