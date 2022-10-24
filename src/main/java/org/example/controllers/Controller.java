@@ -6,8 +6,7 @@ import org.example.models.Matrix;
 import org.example.models.Point;
 import org.example.models.algorithms.astar.Algorithm;
 import org.example.models.algorithms.astar.NoWayFoundException;
-import org.example.models.alpha_beta_pruning.AlphaBetaPruning;
-import org.example.models.minimax.template.MinimaxTemplate;
+import org.example.models.nega.Negamax;
 import org.example.utils.MatrixIOUtil;
 import org.example.utils.coloring.Color;
 import org.example.utils.coloring.ColorfulPrinter;
@@ -16,7 +15,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.Scanner;
 
 public class Controller {
 
@@ -46,8 +44,11 @@ public class Controller {
                 //step of player
 //                MinimaxTemplate.State s = new MinimaxTemplate.State(matrix, true);
 //                matrix = MinimaxTemplate.minimaxDecision(s).getState();
-                AlphaBetaPruning.State state = new AlphaBetaPruning.State(matrix, true);
-                matrix = AlphaBetaPruning.minimaxDecision(state).getState();
+//                AlphaBetaPruning.State state = new AlphaBetaPruning.State(matrix, true);
+//                matrix = AlphaBetaPruning.minimaxDecision(state).getState();
+                Negamax.State state = new Negamax.State(matrix, 1);
+                matrix = Negamax.makeDecision(state).state();
+
                 playerPoint = matrix.findValue(-3);
                 MatrixIOUtil.printToScreen(matrix);
                 checkIfEndOfTheGame(playerPoint, botPoint, exitPoint);
